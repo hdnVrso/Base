@@ -14,8 +14,6 @@ services:
       - POSTGRES_DB=Base
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    networks:
-      - backend
 
   django:
     build:
@@ -31,5 +29,24 @@ services:
       - "8000:8000"
     depends_on:
       - database
-    networks:
-      - backend
+      - redis
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+  celery:
+    build: .
+    command: celery -A Base worker -l INFO
+    volumes:
+      - .:/code
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    depends_on:
+      - django
+      - redis
+  redis:
+    image: "redis:alpine"
