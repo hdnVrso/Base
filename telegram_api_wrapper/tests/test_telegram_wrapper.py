@@ -1,5 +1,5 @@
 from django.test import TestCase
-from TelegramApiWrapper.telegram_api_wrapper import TelegramApiWrapper
+from telegram_api_wrapper.telegram_api_wrapper import TelegramApiWrapper
 
 
 class Channel():

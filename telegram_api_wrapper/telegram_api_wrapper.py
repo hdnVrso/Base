@@ -10,7 +10,7 @@ from telethon import functions
 class TelegramApiWrapper:
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read("TelegramApiWrapper/config.ini")
+        config.read("telegram_api_wrapper/config.ini")
         api_id = config['Telegram']['api_id']
         api_hash = config['Telegram']['api_hash']
         self.phone = config['Telegram']['phone']
