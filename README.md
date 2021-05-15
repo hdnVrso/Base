@@ -1,5 +1,6 @@
 # Base
 [![Build Status](https://travis-ci.org/hiddenSt/Base.svg?branch=master)](https://travis-ci.org/hiddenSt/Base)
+[![Coverage Status](https://coveralls.io/repos/github/hiddenSt/Base/badge.svg?branch=master)](https://coveralls.io/github/hiddenSt/Base?branch=master)
 ## Prerequisites
 Before you begin, ensure you have met the following requirements:
 * Docker
