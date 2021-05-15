@@ -1,5 +1,5 @@
 from django.test import TestCase
-from Base.youtube_api.youtube_api_wrapper import YoutubeApiWrapper
+from youtube_api.youtube_api_wrapper import YoutubeApiWrapper
 
 
 class YoutubeApiWrapperTestCase(TestCase):
