@@ -11,7 +11,7 @@ from pathlib import Path
 import environ
 from celery.schedules import crontab
 
-import core.tasks
+import Base.tasks
 
 # Sets up env
 ENV = environ.Env()
@@ -140,7 +140,7 @@ CELERY_RESULT_BACKEND = "redis://redis:6379"
 
 CELERY_BEAT_SCHEDULE = {
     "sample_task": {
-        "task": "core.tasks.sample_task",
+        "task": "Base.tasks.sample_task",
         "schedule": crontab(minute="*/1"),
     },
 }
