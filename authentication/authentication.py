@@ -34,9 +34,13 @@ class JWTAAccessAuthentication(authentication.BaseAuthentication):
 class JWTRefreshAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         token = request.META.get('Authorization')
+
+        if not token.statswith('Bearer '):
+            raise exceptions.AuthenticationFailed('Wrong auth schema')
+
+        token.removeprefix('Bearer ')
         if not token:
             return None
-
         payload = jwt.decode(token, settings.SECRET_KEY,
                              algorithms='HS256')
 
