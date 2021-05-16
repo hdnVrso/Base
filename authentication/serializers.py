@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 
-from .models import User
+from authentication.models import User
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
-    email = serializers.EmailField()
+    email = serializers.EmailField(max_length=128)
     username = serializers.CharField(min_length=8, max_length=128)
 
     token = serializers.CharField(max_length=255, read_only=True)
