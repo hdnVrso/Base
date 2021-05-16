@@ -22,14 +22,14 @@ class LoginTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
     def test_returns_400_bad_request_if_has_no_email(self):
         url = reverse('authentication:obtain_token')
         request = {'user': {'password': LoginTests.password}}
-        response = self.client.post(url, format='json', request=request)
+        response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_400_BAD_REQUEST)
 
     def test_returns_400_bad_request_if_has_no_password(self):
         url = reverse('authentication:obtain_token')
         request = {'user': {'email': LoginTests.email}}
-        response = self.client.post(url, format='json', request=request)
+        response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_400_BAD_REQUEST)
 
@@ -38,7 +38,7 @@ class LoginTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
 
         request = {'user': {'email': 'emailemail.com',
                             'password': LoginTests.password}}
-        response = self.client.post(url, format='json', request=request)
+        response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_400_BAD_REQUEST)
 
