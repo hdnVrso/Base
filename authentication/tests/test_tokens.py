@@ -47,6 +47,6 @@ class LoginTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
 
         request = {'user': {'email': LoginTests.email,
                    'password': LoginTests.password}}
-        response = self.client.post(url, format='json', request=request)
+        response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_200_OK)
