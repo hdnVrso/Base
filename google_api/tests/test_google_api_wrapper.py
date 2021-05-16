@@ -1,5 +1,5 @@
 from django.test import TestCase
-from Base.google_api.google_api import GoogleBookApiWrapper
+from google_api.google_api import GoogleBookApiWrapper
 
 
 class GoogleApiWrapper(TestCase):
