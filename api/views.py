@@ -39,3 +39,7 @@ class RequestsHistory(APIView):
 class RequestsRating(APIView):
     def get(self, request: Request):
         return Response("Not implemented", status=500)
+
+class ResetPassword(APIView):
+    def post(self, request: Request):
+        return Response("Not implemented", status=500)

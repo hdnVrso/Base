@@ -20,11 +20,10 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: django
-    command: python manage.py runserver 0.0.0.0:8000
+    working_dir: /code/
     tty: true
     volumes:
       - .:/code/
-    working_dir: /code/
     ports:
       - "8000:8000"
     depends_on:
