@@ -5,8 +5,8 @@ from .serializers import RequestSerializer
 
 
 class Health(APIView):
-    def head(self):
-        return Response(200)
+    def head(self, request):
+        return Response(status=200)
 
 
 class Users(APIView):
@@ -39,6 +39,7 @@ class RequestsHistory(APIView):
 class RequestsRating(APIView):
     def get(self, request: Request):
         return Response("Not implemented", status=500)
+
 
 class ResetPassword(APIView):
     def post(self, request: Request):
