@@ -1,9 +1,11 @@
 import os
 from celery import Celery
 from celery.schedules import crontab
-from api.models.request_model import RequestModel
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Base.settings")
+
+from django.apps import apps
+model = apps.get_model(app_label='api', model_name='RequestModel')
 
 app = Celery("Base")
 app.config_from_object("django.conf:settings", namespace="CELERY")
