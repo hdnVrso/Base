@@ -90,7 +90,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return refresh_token
 
 
-
 class RequestModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(blank=False, max_length=100)
