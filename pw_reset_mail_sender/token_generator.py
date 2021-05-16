@@ -1,7 +1,7 @@
 from uuid import uuid4
 from authentication.models import User
-from mail_sender.models.reset_pw_model import ResetPwModel
-from mail_sender.smtp_sender import SmtpSender
+from pw_reset_mail_sender.models.reset_pw_model import ResetPwModel
+from pw_reset_mail_sender.smtp_sender import SmtpSender
 
 
 class TokenGenerator:

@@ -2,7 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
 from .serializers import RequestSerializer
-
+from pw_reset_mail_sender.check_tocken import TokenChecker
+from pw_reset_mail_sender.token_generator import TokenGenerator
 
 class Health(APIView):
     def head(self):
@@ -40,6 +41,21 @@ class RequestsRating(APIView):
     def get(self, request: Request):
         return Response("Not implemented", status=500)
 
+
 class ResetPassword(APIView):
     def post(self, request: Request):
-        return Response("Not implemented", status=500)
+        email = request.data.get('email', {})
+        token = request.data.get('token', {})
+        new_password = request.data.get('new_password', {})
+        repeated_new_password = request.data.get('new_password1', {})
+        check_token = TokenChecker()
+        resp = check_token.check_token(email, token, new_password, repeated_new_password)
+        return Response(resp[1], status=resp[2])
+
+
+class SetEmail(APIView):
+    def post(self, request: Request):
+        email = request.data.get('email', {})
+        token_gen = TokenGenerator()
+        token_gen.send_token(email)
+        return Response("", status=500)

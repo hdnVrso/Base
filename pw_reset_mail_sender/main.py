@@ -1,4 +1,4 @@
-from mail_sender import smtp_sender
+from pw_reset_mail_sender import smtp_sender
 
 
 def main():

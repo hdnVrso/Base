@@ -7,7 +7,7 @@ import configparser
 class SmtpSender:
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read("mail_sender/config.ini")
+        config.read("pw_reset_mail_sender/config.ini")
         self.msg = MIMEMultipart()
         self.password = config['SMTP']['password']
         self.msg['From'] = config['SMTP']['mailer_email']
