@@ -1,9 +1,8 @@
 from django.urls import path
-from .views import Health, Users, Requests, RequestsHistory, RequestsRating, ResetPassword
+from .views import Health, Requests, RequestsHistory, RequestsRating, ResetPassword
 
 urlpatterns = [
     path('health/', Health.as_view(), name='health'),
-    path('users/', Users.as_view(), name='users'),
     path('requests/', Requests.as_view(), name='requests'),
     path(
         'requests/history',
