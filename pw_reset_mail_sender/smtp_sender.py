@@ -4,7 +4,7 @@ import smtplib
 import configparser
 
 
-class SmtpSender():
+class SmtpSender:
     def __init__(self):
         config = configparser.ConfigParser()
         config.read("mail_sender/config.ini")
@@ -16,7 +16,7 @@ class SmtpSender():
 
     def send_email(self, addressee, message):
         self.server.login(self.msg['From'], self.password)
-        self.msg.attach(MIMEText(message, 'plain'))
+        self.msg.attach(MIMEText(message+"- код для смены пароля", 'plain'))
         self.msg['To'] = addressee
         self.msg['Subject'] = "Сброс пароля BaseApp"
         self.server.sendmail(self.msg['From'], self.msg['To'], self.msg.as_string())
