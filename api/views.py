@@ -4,9 +4,10 @@ from rest_framework.request import Request
 from .serializers import RequestSerializer
 
 
+
 class Health(APIView):
-    def head(self):
-        return Response(200)
+    def head(self, request):
+        return Response(status=200)
 
 
 class Users(APIView):

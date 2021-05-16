@@ -43,9 +43,8 @@ class RegistrationTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
                      'password': 'Pass12344'}
             }
         response = self.client.post(url, format='json', request=request)
-        self.assertEqual(response.status_code,
-                         status.HTTP_200_OK)
-        print(response.body)
+        self.assertEqual(response.data,
+                         'Hello world')
 
     def test_returns_correct_response_body_if_request_is_valid(self):
         url = reverse('authentication:register')
@@ -53,7 +52,7 @@ class RegistrationTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
                             'password': 'Pass1234'}
                   }
         response = self.client.post(url, format='json', request=request)
-        self.assertEqual(response.body, {
+        self.assertEqual(response.data, {
                              'email': request['user']['email'],
                              'username': request['user']['username']
         })
