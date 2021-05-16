@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Base.models.request_model import RequestModel
+from api.models.request_model import RequestModel
 
 
 class RequestSerializer(serializers.ModelSerializer):
