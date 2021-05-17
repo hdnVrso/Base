@@ -34,10 +34,7 @@ class TelegramApiWrapper:
         ))
         channels_dicts = []
         links = ""
-        counter = 0
         for channel in result.chats:
-            if counter == 3:
-                break
             full_result = self.client(functions.channels.GetFullChannelRequest(
                 channel=channel.id
             ))
@@ -45,7 +42,6 @@ class TelegramApiWrapper:
                                             full_result.full_chat.about)
             links += "\n" + channel_dict['link']
             channels_dicts.append(channel_dict)
-            counter += 1
         # self.send_messages("@marshaldub", links)#Изменить
         return channels_dicts
 
