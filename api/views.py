@@ -5,6 +5,7 @@ from .serializers import RequestSerializer
 from pw_reset_mail_sender.check_tocken import TokenChecker
 from pw_reset_mail_sender.token_generator import TokenGenerator
 
+
 class Health(APIView):
     def head(self):
         return Response(200)
@@ -57,5 +58,8 @@ class SetEmail(APIView):
     def post(self, request: Request):
         email = request.data.get('email', {})
         token_gen = TokenGenerator()
-        token_gen.send_token(email)
-        return Response("", status=500)
+        res = token_gen.send_token(email)
+        if res:
+            return Response("Token sent successfully", status=200)
+        else:
+            return Response("No user with this email address", status=403)

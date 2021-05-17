@@ -14,17 +14,11 @@ class SmtpSender:
         self.server = smtplib.SMTP('smtp.yandex.ru: 587')
         self.server.starttls()
 
-    def send_email(self, addressee, message):
+    def send_email(self, addressee, message, subject):
         self.server.login(self.msg['From'], self.password)
-        self.msg.attach(MIMEText(message+"- код для смены пароля", 'plain'))
+        self.msg.attach(MIMEText(message, 'plain'))
         self.msg['To'] = addressee
-        self.msg['Subject'] = "Сброс пароля BaseApp"
+        self.msg['Subject'] = subject
         self.server.sendmail(self.msg['From'], self.msg['To'], self.msg.as_string())
         self.server.quit()
         return "successfully sent email to %s:" % (self.msg['To'])
-
-# create server
-
-# Login Credentials for sending the mail
-
-# send the message via the server.
