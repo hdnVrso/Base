@@ -55,5 +55,5 @@ coverage report
 ```
 if you need more precise or detailed report see [coverage.py](https://coverage.readthedocs.io/en/coverage-5.5/cmd.html) docs.
 
-<i>Note: we need 90% coverage for our code base. Improve only your codebase</i>
+<i>Note: we need 70% coverage for our code base. Improve only your codebase</i>
 
