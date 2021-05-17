@@ -34,6 +34,7 @@ class TestMailSender(TestCase):
             self.assertTrue(True)
         else:
             self.assertTrue(False)
+
     def test_check_email(self):
         user_email = 'user@email.com'
         user = User(email=user_email, username='use1214',
@@ -44,6 +45,3 @@ class TestMailSender(TestCase):
             self.assertTrue(True)
         else:
             self.assertTrue(False)
-
-
-

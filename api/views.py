@@ -63,4 +63,3 @@ class SetEmail(APIView):
             return Response("Token sent successfully", status=200)
         else:
             return Response("No user with this email address", status=403)
-
