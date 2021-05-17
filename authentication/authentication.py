@@ -14,6 +14,10 @@ class JWTAAccessAuthentication(authentication.BaseAuthentication):
         token = request.META.get('Authorization')
         if not token:
             return None
+        if not token.statswith('Bearer '):
+            raise exceptions.AuthenticationFailed('Incorrect token type')
+
+        token = token.removeprefix('Bearer ')
 
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
 

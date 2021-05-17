@@ -7,8 +7,8 @@ from pw_reset_mail_sender.token_generator import TokenGenerator
 
 
 class Health(APIView):
-    def head(self):
-        return Response(200)
+    def head(self, request):
+        return Response(status=200)
 
 
 class Users(APIView):
@@ -63,3 +63,4 @@ class SetEmail(APIView):
             return Response("Token sent successfully", status=200)
         else:
             return Response("No user with this email address", status=403)
+
