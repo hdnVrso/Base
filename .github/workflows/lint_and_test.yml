@@ -30,7 +30,7 @@ jobs:
       - name: Build and run docker-compose
         run: docker-compose up -d --build
       - name: migrations
-        run: docker-compose run --rm django python manage.py migrate
+        run: docker-compose run --rm django python manage.py make migrations && docker-compose run --rm django python manage.py migrate
       - name: tests
         run: docker-compose run --rm django python manage.py test
       - name: Coveralls
