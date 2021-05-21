@@ -9,11 +9,12 @@ import jwt
 from .models import User
 
 
-class JWTAAccessAuthentication(authentication.BaseAuthentication):
+class JWTAccessAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         token = request.META.get('Authorization')
         if not token:
-            return None
+            raise exceptions.AuthenticationFailed('Incorrect token')
+
         if not token.statswith('Bearer '):
             raise exceptions.AuthenticationFailed('Incorrect token type')
 
@@ -22,7 +23,7 @@ class JWTAAccessAuthentication(authentication.BaseAuthentication):
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
 
         if payload['type'] != 'access':
-            raise exceptions.AuthenticationFailed('Must be access t')
+            raise exceptions.AuthenticationFailed('Wrong token type')
 
         if payload['exp'] < datetime.now():
             raise exceptions.AuthenticationFailed('Token expired')
@@ -49,7 +50,7 @@ class JWTRefreshAuthentication(authentication.BaseAuthentication):
                              algorithms='HS256')
 
         if payload['type'] != 'refresh':
-            raise exceptions.AuthenticationFailed('Must be refresh token')
+            raise exceptions.AuthenticationFailed('Wrong token type')
 
         if payload['exp'] < datetime.now():
             raise exceptions.AuthenticationFailed('Token expired')
