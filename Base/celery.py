@@ -36,8 +36,8 @@ def get_top():
             text=text, request_list=request_list, time_now=time_now))
     json_data = {"day": {"numberOfQuery": number_of_query_list,
                          "queryContent": top_requests_texts}}
-    input_empty_lists_to_request_number_list(number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_DAY, 8)
-    input_empty_lists_to_query_content_lists(top_requests_texts, COUNT_OF_TOP_REQUESTS_PER_DAY)
+    input_empty_lists_to_request_number_list(number_of_query_list, 5, 8)
+    input_empty_strings_to_query_content_list(top_requests_texts, 5)
     with open('data.json', 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
@@ -74,6 +74,6 @@ def input_empty_lists_to_request_number_list(request_number_list, list_length, e
         request_number_list.append([0 for i in range(empty_list_length)])
 
 
-def input_empty_lists_to_query_content_lists(query_content_list, list_length):
+def input_empty_strings_to_query_content_list(query_content_list, list_length):
     for _ in (range(list_length - len(query_content_list))):
-        request_number_list.append(["" for i in range(empty_list_length)])
+        query_content_list.append("")
