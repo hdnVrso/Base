@@ -14,9 +14,10 @@ class TokenGenerator:
             new_reset = ResetPwModel(userMail=email, token=rand_token)
             new_reset.save()
             mail_sender = SmtpSender()
-            message = str(rand_token) + "- Ваш код для восстановления пароля в приложении Base." + \
-                      "\nЕсли вы не запрашивали данный код - просто проигнорируйте это письмо." + \
-                      "\nС уважением,\nКоманда приложения Base."
+            text = "- Ваш код для восстановления пароля в приложении Base." + \
+                   "\nЕсли вы не запрашивали данный код - просто проигнорируйте это письмо." + \
+                   "\nС уважением,\nКоманда приложения Base."
+            message = str(rand_token) + text
             mail_sender.send_email(email, message, "Сброс пароля BaseApp")
             return True
         else:

@@ -42,7 +42,7 @@ class TelegramApiWrapper:
                                             full_result.full_chat.about)
             links += "\n" + channel_dict['link'] + "\n"
             channels_dicts.append(channel_dict)
-        message = 'Список каналов найденных для вас приложением Base:\n' + links
+        # message = 'Список каналов найденных для вас приложением Base:\n' + links
         # self.send_messages("@k_hamraev", message)  # Изменить
         return channels_dicts
 
