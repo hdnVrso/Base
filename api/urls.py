@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import Health, Requests, RequestsHistory, RequestsRating, ResetPassword
+from .views import Health, Requests, RequestsHistory, RequestsRating, ResetPassword, CeleryDataView
 
 urlpatterns = [
     path('health/', Health.as_view(), name='health'),
+    path('celery_data/', CeleryDataView.as_view(), name='celery_data'),
     #path('requests/', Requests.as_view(), name='requests'),
     #path(
     #    'requests/history',

@@ -6,6 +6,7 @@ from .serializers import RequestSerializer
 
 class Health(APIView):
     permission_classes = ()
+
     def head(self, request):
         return Response(status=200)
 
@@ -45,3 +46,8 @@ class RequestsRating(APIView):
 class ResetPassword(APIView):
     def post(self, request: Request):
         return Response("Not implemented", status=500)
+
+
+class CeleryDataView(APIView):
+    def get(self, request):
+        return Response(open("celery_test_data.json", 'r').read())
