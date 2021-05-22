@@ -15,7 +15,7 @@ app.autodiscover_tasks()
 def setup_periodic_tasks(sender, **kwargs):
     sender.add_periodic_task(
         5.0,
-        create_top_requests_per_week.s(),
+        create_top_requests_per_month.s(),
     )
 
 
@@ -66,7 +66,29 @@ def create_top_requests_per_week():
         json.dump(json_data, json_file, indent=4)
 
 
-def create_time_interval_list_of_counts_for_request(text, request_list, time_now):
+@app.task
+def create_top_requests_per_month():
+    from authentication.models import RequestModel
+    COUNT_OF_TOP_REQUESTS_PER_MONTH = 5
+    LENGTH_TOP_REQUESTS_NUMBER_LIST = 4
+    time_now = datetime.now()
+    number_of_query_list, query_content_list, top_requests_texts = [], [], []
+    time_threshold = time_now - timedelta(weeks=4)
+    request_list = RequestModel.objects.filter(timestamp__gte=time_threshold)
+    top_requests_texts = create_topics_list_by_time_interval(RequestModel, time_threshold)
+    for text in top_requests_texts:
+        number_of_query_list.append(create_topics_count_list_per_month(
+            text=text, request_list=request_list, time_now=time_now))
+    json_data = {"month": {"numberOfQuery": number_of_query_list,
+                           "queryContent": top_requests_texts}}
+    input_empty_lists_to_request_number_list(number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_MONTH,
+                                             LENGTH_TOP_REQUESTS_NUMBER_LIST)
+    input_empty_strings_to_query_content_list(top_requests_texts, COUNT_OF_TOP_REQUESTS_PER_MONTH)
+    with open('data.json', 'w') as json_file:
+        json.dump(json_data, json_file, indent=4)
+
+
+def create_topics_count_list_per_day(text, request_list, time_now):
     THREE_HOURS_AGO_COEF = 1
     ONE_DAY_AGO_COEF = 9
     TIME_INTERVAL = 3
@@ -85,7 +107,19 @@ def create_topics_count_list_per_week(text, request_list, time_now):
     number_list = []
     for day in range(1, 8):
         time_left = time_now - timedelta(days=day)
-        time_right = time_now - timedelta(days=day-1)
+        time_right = time_now - timedelta(days=day - 1)
+        request_list_per_current_interval = request_list.filter(
+            text=text, timestamp__range=[time_left, time_right])
+        number_list.append(request_list_per_current_interval.count())
+    number_list.reverse()
+    return number_list
+
+
+def create_topics_count_list_per_month(text, request_list, time_now):
+    number_list = []
+    for week in range(1, 5):
+        time_left = time_now - timedelta(weeks=week)
+        time_right = time_now - timedelta(weeks=week - 1)
         request_list_per_current_interval = request_list.filter(
             text=text, timestamp__range=[time_left, time_right])
         number_list.append(request_list_per_current_interval.count())
