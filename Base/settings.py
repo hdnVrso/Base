@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'authentication',
     'pw_reset_mail_sender',
     'api',
-
 ]
 
 MIDDLEWARE = [
