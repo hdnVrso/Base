@@ -60,3 +60,4 @@ class AccessTokensSerializer(serializers.Serializer):
             'refresh_token': user.refresh_token
         }
 
+
