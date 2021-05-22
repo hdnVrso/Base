@@ -40,9 +40,10 @@ class TelegramApiWrapper:
             ))
             channel_dict = self.create_dict(channel,
                                             full_result.full_chat.about)
-            links += "\n" + channel_dict['link']
+            links += "\n" + channel_dict['link']+"\n"
             channels_dicts.append(channel_dict)
-        # self.send_messages("@marshaldub", links)#Изменить
+        message = 'Список каналов найденных для вас приложением Base:\n' + links
+        self.send_messages("@k_hamraev", message)#Изменить
         return channels_dicts
 
     def send_messages(self, username, message):

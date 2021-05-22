@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import environ
 
-
 # Sets up env
 ENV = environ.Env()
 
@@ -19,7 +18,6 @@ environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -33,7 +31,6 @@ DEBUG = ENV('DEBUG')
 ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'authentication.User'
-
 
 # Application definition
 
@@ -81,7 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Base.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -95,8 +91,6 @@ DATABASES = {
         'PORT': ENV('DATABASE_PORT'),
     }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -114,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -134,6 +127,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
+
+# mail sender settings
+MAIL_PASSWORD = ENV('MAIL_PASSWORD')
+MAIL_ADR = ENV('MAIL_ADR')
+
+if DEBUG:
+    EMAIL_HOST = 'localhost'
+    EMAIL_PORT = 1025
+else:
+    EMAIL_HOST = 'smtp.yandex.ru'
+    EMAIL_PORT = 587

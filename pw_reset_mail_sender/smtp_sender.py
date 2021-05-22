@@ -1,21 +1,21 @@
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
-import configparser
+from Base import settings
 
 
 class SmtpSender:
     def __init__(self):
-        config = configparser.ConfigParser()
-        config.read("pw_reset_mail_sender/config.ini")
         self.msg = MIMEMultipart()
-        self.password = config['SMTP']['password']
-        self.msg['From'] = config['SMTP']['mailer_email']
-        self.server = smtplib.SMTP('smtp.yandex.ru: 587')
-        self.server.starttls()
+        self.password = settings.MAIL_PASSWORD
+        self.msg['From'] = settings.MAIL_ADR
+        host_and_port = settings.EMAIL_HOST + ': ' + str(settings.EMAIL_PORT)
+        self.server = smtplib.SMTP(host_and_port)
+        if not settings.DEBUG:
+            self.server.starttls()
+            self.server.login(self.msg['From'], self.password)
 
     def send_email(self, addressee, message, subject):
-        self.server.login(self.msg['From'], self.password)
         self.msg.attach(MIMEText(message, 'plain'))
         self.msg['To'] = addressee
         self.msg['Subject'] = subject
