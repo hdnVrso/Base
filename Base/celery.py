@@ -18,53 +18,6 @@ def setup_periodic_tasks(sender, **kwargs):
 
 app.conf.timezone = 'UTC'
 
-'''
-@app.task
-def sample_task():
-    from authentication.models import RequestModel
-    from datetime import datetime, timedelta
-    from authentication.models import RequestGraphDataModel, TimeIntervals
-    import json
-    top_requests = {}
-    date_from = datetime.now() - timedelta(days=1)
-    request_list = RequestModel.objects.filter(timestamp__date__gte=date_from)
-    for request in request_list:
-        top_requests[request.text] = top_requests.get(request.text, 0) + 1
-    top_requests = sorted(top_requests.items(), key=lambda item: item[1])[-5:]
-    top_request_textes = [item[0] for item in top_requests]
-    for text in top_request_textes:
-        RequestGraphDataModel.objects.create(text=text,
-                                             request_count=request_list.filter(text=text).all().count(),
-                                             request_interval_time=TimeIntervals.)
-'''
-
-
-def get_top_requests():
-    from authentication.models import RequestModel
-    from datetime import datetime, timedelta
-    from authentication.models import RequestGraphDataModel
-    import json
-    from collections import OrderedDict
-    top_requests = OrderedDict()
-    number_of_query, content_query = [], []
-    new_json_number_query_list = []
-    time_threshold = datetime.now() - timedelta(hours=3)
-    request_list = RequestModel.objects.filter(timestamp__gte=time_threshold)
-    for request in request_list:
-        top_requests[request.text] = top_requests.get(request.text, 0) + 1
-    sorted_request_dict = (OrderedDict(sorted(top_requests.items(), key=lambda t: t[1])))
-    for request in list(sorted_request_dict.items())[-5:]:
-        number_of_query.append(request[1])
-        content_query.append(request[0])
-    with open('data.json', 'r') as json_file:
-        file_data = json.load(json_file)
-    for json_file_list_of_number, current_number in zip(file_data['day']['numberOfQuery'], number_of_query):
-        json_file_list_of_number.append(current_number)
-        new_json_number_query_list.append(json_file_list_of_number)
-    with open('data.json', 'w') as file:
-        file.write(json.dumps({"day": {"numberOfQuery": new_json_number_query_list,
-                                       "queryContent": content_query}}, indent=4))
-
 
 @app.task
 def get_top():
