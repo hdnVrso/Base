@@ -28,7 +28,7 @@ def create_top_requests_per_day():
     COUNT_OF_TOP_REQUESTS_PER_DAY = 5
     LENGTH_TOP_REQUESTS_NUMBER_LIST = 8
     time_now = datetime.now()
-    number_of_query_list, query_content_list, top_requests_texts = [], [], []
+    number_of_query_list, top_requests_texts = [], []
     time_threshold = time_now - timedelta(days=1)
     request_list = RequestModel.objects.filter(timestamp__gte=time_threshold)
     top_requests_texts = create_topics_list_by_time_interval(RequestModel, time_threshold)
@@ -50,7 +50,7 @@ def create_top_requests_per_week():
     COUNT_OF_TOP_REQUESTS_PER_WEEK = 5
     LENGTH_TOP_REQUESTS_NUMBER_LIST = 7
     time_now = datetime.now()
-    number_of_query_list, query_content_list, top_requests_texts = [], [], []
+    number_of_query_list, top_requests_texts = [], []
     time_threshold = time_now - timedelta(days=7)
     request_list = RequestModel.objects.filter(timestamp__gte=time_threshold)
     top_requests_texts = create_topics_list_by_time_interval(RequestModel, time_threshold)
@@ -72,7 +72,7 @@ def create_top_requests_per_month():
     COUNT_OF_TOP_REQUESTS_PER_MONTH = 5
     LENGTH_TOP_REQUESTS_NUMBER_LIST = 4
     time_now = datetime.now()
-    number_of_query_list, query_content_list, top_requests_texts = [], [], []
+    number_of_query_list, top_requests_texts = [], []
     time_threshold = time_now - timedelta(weeks=4)
     request_list = RequestModel.objects.filter(timestamp__gte=time_threshold)
     top_requests_texts = create_topics_list_by_time_interval(RequestModel, time_threshold)
