@@ -8,6 +8,7 @@ from pw_reset_mail_sender.token_generator import TokenGenerator
 
 class Health(APIView):
     permission_classes = ()
+
     def head(self, request):
         return Response(status=200)
 
