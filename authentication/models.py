@@ -72,7 +72,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         access_token = jwt.encode({
             'id': self.pk,
-            'exp': int(dt.strftime('%s')),
+            'exp': dt.strftime('%s'),
             'type': 'access',
         }, settings.SECRET_KEY, algorithm='HS256')
 

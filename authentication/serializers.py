@@ -59,5 +59,3 @@ class AccessTokensSerializer(serializers.Serializer):
             'access_token': user.access_token,
             'refresh_token': user.refresh_token
         }
-
-

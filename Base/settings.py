@@ -116,7 +116,12 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-    ]
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'authentication.backends.JWTAccessAuthentication',
+        'authentication.backends.JWTRefreshAuthentication'
+    ],
 }
 
 # Internationalization

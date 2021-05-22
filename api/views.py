@@ -6,6 +6,7 @@ from .serializers import RequestSerializer
 
 class Health(APIView):
     permission_classes = ()
+
     def head(self, request):
         return Response(status=200)
 

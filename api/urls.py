@@ -4,7 +4,7 @@ from .views import Health, Requests, RequestsHistory, RequestsRating, ResetPassw
 urlpatterns = [
     path('health/', Health.as_view(), name='health'),
     #path('requests/', Requests.as_view(), name='requests'),
-    #path(
+    # path(
     #    'requests/history',
     #    RequestsHistory.as_view(),
     #    name='requests_history'),
