@@ -60,6 +60,7 @@ class TestMailSender(TestCase):
         x = threading.Thread(target=self.create_debugging_server)
         x.daemon = True  # This thread dies when main thread (only non-daemon thread) exits.
         x.start()
+        time.sleep(2)
         sender = SmtpSender()
         sender.send_email("my@me.muuu", "hello", "autotest" + str(datetime.datetime.now()))
         if sender:
@@ -76,11 +77,14 @@ class TestMailSender(TestCase):
             self.assertFalse(False)
 
     def test_create_new_reset(self):
+        x = threading.Thread(target=self.create_debugging_server)
+        x.daemon = True  # This thread dies when main thread (only non-daemon thread) exits.
+        x.start()
+        time.sleep(2)
         user_email = 'user@email.com'
         user = User(email=user_email, username='use1214',
                     password='Pass1234')
         user.save()
-        time.sleep(2)
         tg = TokenGenerator()
         tg.send_token(user_email)
         if ResetPwModel.objects.filter(userMail=user_email).exists():
