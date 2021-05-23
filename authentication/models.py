@@ -1,5 +1,4 @@
 import jwt
-
 from datetime import datetime, timedelta
 
 from django.conf import settings
@@ -77,3 +76,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         }, settings.SECRET_KEY, algorithm='HS256')
 
         return access_token
+
+    def _generate_jwt_refresh_token(self):
+        dt = datetime.now() + timedelta(days=1)
+
+        refresh_token = jwt.encode({
+            'id': self.pk,
+            'exp': int(dt.strftime('%s')),
+            'type': 'refresh',
+        }, settings.SECRET_KEY, algorithm='HS256')
+
+        return refresh_token
