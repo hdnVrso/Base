@@ -1,0 +1,52 @@
+{
+        "day": {
+          "numberOfQuery": [
+            [1200, 2500, 1450, 3000, 2500, 4000, 2000, 4500],
+            [4500, 2000, 4000, 2500, 3000, 1450, 2500, 1200],
+            [1000, 3500, 2450, 3500, 4500, 1000, 2222, 1600],
+            [3200, 4500, 3450, 1000, 2000, 2000, 1300, 4650],
+            [2200, 1500, 3000, 4000, 3500, 1000, 3000, 3500],
+          ],
+          "queryContent": [
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" }
+          ]
+        },
+
+        "week": {
+          "numberOfQuery": [
+            [1200, 2500, 1450, 3000, 2500, 4000, 2000],
+            [4500, 2000, 4000, 2500, 3000, 1450, 2500],
+            [1000, 3500, 2450, 3500, 4500, 1000, 2222],
+            [3200, 4500, 3450, 1000, 2000, 2000, 1300],
+            [2200, 1500, 3000, 4000, 3500, 1000, 3000]
+          ],
+          "queryContent": [
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" }
+          ],
+        },
+
+        "month": {
+          "numberOfQuery": [
+            [1200, 2500, 1450, 3000],
+            [4500, 2000, 4000, 2500],
+            [1000, 3500, 2450, 3500],
+            [3200, 4500, 3450, 1000],
+            [2200, 1500, 3000, 4000]
+          ],
+          "queryContent": [
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" },
+            { "title": "String", "text": "String" }
+          ]
+        }
+      }

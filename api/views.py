@@ -47,6 +47,14 @@ class RequestsRating(APIView):
 
 class ResetPassword(APIView):
     def post(self, request: Request):
+
+        return Response("Not implemented", status=500)
+
+
+class CeleryDataView(APIView):
+    def get(self, request):
+        return Response(open("celery_test_data.json", 'r').read())
+
         email = request.data.get('email', {})
         token = request.data.get('token', {})
         new_password = request.data.get('new_password', {})
