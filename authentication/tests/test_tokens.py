@@ -3,32 +3,35 @@ from rest_framework import status
 from django.urls import include, path, reverse
 from django.test import TransactionTestCase
 from ..models import User
+from faker import Faker
 
 
-class LoginTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
+class ObtainTokenTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
     urlpatterns = [
         path('api/', include('authentication.urls'))
     ]
-    username = 'FakeUser'
-    email = 'fake@email.com'
-    password = 'Pass1234'
 
     def setUp(self):
+        self.fake = Faker()
+        self.username = self.fake.name()
+        self.email = self.fake.email()
+        self.password = self.fake.password()
         self.user = User.objects.create_user(
-            username=LoginTests.username,
-            email=LoginTests.email,
-            password=LoginTests.password)
+            username=self.username,
+            email=self.email,
+            password=self.password
+        )
 
     def test_returns_400_bad_request_if_has_no_email(self):
         url = reverse('authentication:obtain_token')
-        request = {'user': {'password': LoginTests.password}}
+        request = {'user': {'password': self.password}}
         response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_400_BAD_REQUEST)
 
     def test_returns_400_bad_request_if_has_no_password(self):
         url = reverse('authentication:obtain_token')
-        request = {'user': {'email': LoginTests.email}}
+        request = {'user': {'email': self.email}}
         response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_400_BAD_REQUEST)
@@ -37,7 +40,7 @@ class LoginTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
         url = reverse('authentication:obtain_token')
 
         request = {'user': {'email': 'emailemail.com',
-                            'password': LoginTests.password}}
+                            'password': self.password}}
         response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_400_BAD_REQUEST)
@@ -45,8 +48,87 @@ class LoginTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
     def test_returns_200_ok_if_request_is_valid(self):
         url = reverse('authentication:obtain_token')
 
-        request = {'user': {'email': LoginTests.email,
-                   'password': LoginTests.password}}
+        request = {'user': {'email': self.email,
+                   'password': self.password}}
         response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_200_OK)
+
+
+class RefreshTokenTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
+    urlpatterns = [
+        path('api/', include('authentication.urls'))
+    ]
+
+    def setUp(self):
+        self.fake = Faker()
+        self.username = self.fake.name()
+        self.email = self.fake.email()
+        self.password = self.fake.password()
+        self.user = User.objects.create_user(
+            username=self.username,
+            email=self.email,
+            password=self.password
+        )
+
+    def test_returns_403_forbidden_if_request_has_no_token(self):
+        url = reverse('authentication:refresh_token')
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_403_FORBIDDEN)
+
+    def test_returns_403_forbidden_if_request_has_no_token_type_prefix(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        self.client.credentials(HTTP_AUTHORIZATION=refresh_token)
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_403_FORBIDDEN)
+
+    def test_returns_403_forbidden_if_request_has_invalid_token_type_prefix(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        self.client.credentials(HTTP_AUTHORIZATION='Invalid_prefix ' + refresh_token)
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_403_FORBIDDEN)
+
+    def test_returns_403_forbidden_if_request_has_invalid_token(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Bearer ' + refresh_token + 'some_invalid_string')
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_403_FORBIDDEN)
+
+    def test_returns_403_forbidden_if_request_has_expired_token(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+
+        # TODO: expire token
+        # payload = jwt.decode(refresh_token, settings.SECRET_KEY,
+        #                     algorithms='HS256')
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Bearer' + refresh_token)
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_403_FORBIDDEN)
+
+    def test_returns_200_ok_if_request_is_valid(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + refresh_token)
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_200_OK)
+
+    def test_returns_correct_body_if_request_is_valid(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + refresh_token)
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_200_OK)
+        self.assertContains(response, 'access_token')
+        self.assertContains(response, 'refresh_token')
