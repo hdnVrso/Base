@@ -67,8 +67,9 @@ services:
       context: .
       dockerfile: front_dockerfile
     container_name: front
+    tty: true
     working_dir: /code/
-    command: ./node_modules/.bin/react-scripts start && yarn run start
+    #command: yarn run start
     volumes:
       - ./Base_ClientSide:/code/
     ports:
