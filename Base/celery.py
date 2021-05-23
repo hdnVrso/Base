@@ -67,7 +67,7 @@ def create_top_requests_per_week():
     top_requests_texts = append_list_with_empty_strings(top_requests_texts,
                                                         COUNT_OF_TOP_REQUESTS_PER_WEEK)
     json_data = {"week": {"numberOfQuery": number_of_query_list,
-                         "queryContent": top_requests_texts}}
+                          "queryContent": top_requests_texts}}
     with open('data.json', 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
@@ -90,7 +90,7 @@ def create_top_requests_per_month():
     top_requests_texts = append_list_with_empty_strings(top_requests_texts,
                                                         COUNT_OF_TOP_REQUESTS_PER_MONTH)
     json_data = {"month": {"numberOfQuery": number_of_query_list,
-                         "queryContent": top_requests_texts}}
+                           "queryContent": top_requests_texts}}
     with open('data.json', 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 

@@ -1,11 +1,11 @@
 from django.test import TestCase
 from Base.celery import append_list_with_empty_lists, append_list_with_empty_strings, \
     create_topics_list_by_time_interval, create_topics_count_list_per_day, \
-    create_topics_count_list_per_week, create_topics_count_list_per_month, \
     create_top_requests_per_day, create_top_requests_per_week, create_top_requests_per_month
 from datetime import datetime, timedelta
 from api.models import RequestModel
 from authentication.models import User
+import json
 
 
 class CeleryTestCase(TestCase):
@@ -81,25 +81,73 @@ class CeleryTestCase(TestCase):
                 days=1)), TIME_NOW))
 
     def test_create_top_requests_per_day(self):
-        TEST_REQUEST_COUNT = 15
+        TEST_REQUEST_COUNT = 10
         TEST_RESULT = {
             "day": {
                 "numberOfQuery": [
-                    [0, 0, 0, 0, 0, 0, 1]
-                    [0, 0, 0, 0, 0, 0, 0, 0]
-                    [0, 0, 0, 0, 0, 0, 0, 0]
-                    [0, 0, 0, 0, 0, 0, 0, 0]
-                    [0, 0, 0, 0, 0, 0, 0, 0]
+                    [0, 1, 1, 0, 1, 0, 1, 1],
+                    [0, 1, 1, 0, 1, 0, 1, 1],
+                    [0, 1, 1, 0, 1, 0, 1, 1],
+                    [0, 1, 1, 0, 1, 0, 1, 1],
+                    [0, 1, 1, 0, 1, 0, 1, 1],
                 ],
-                "queryContent": ["test_request_10", "test_request_11", "test_request_12",
-                                 "test_request_13", "test_request_14"]
+                "queryContent": ["test_request_5", "test_request_6", "test_request_7",
+                                 "test_request_8", "test_request_9"]
             }
         }
         for i in range(TEST_REQUEST_COUNT):
             for hours_cof in range(i):
                 new_model = RequestModel(user=self.TEST_USER, text=f'test_request_{i}')
-                new_model.timestamp = new_model.timestamp - timedelta(hours=hours_cof * 3)
+                new_model.timestamp = new_model.timestamp - timedelta(hours=hours_cof * 5)
                 new_model.save()
         create_top_requests_per_day()
-        with open('data.json', 'r')as file:
-            print(file.read())
+        with open('data.json', 'r') as file:
+            self.assertEquals(json.load(file), TEST_RESULT)
+
+    def test_create_top_requests_per_week(self):
+        TEST_REQUEST_COUNT = 10
+        TEST_RESULT = {
+            "week": {
+                "numberOfQuery": [
+                    [1, 0, 1, 0, 1, 0, 1],
+                    [1, 0, 1, 0, 1, 0, 1],
+                    [1, 0, 1, 0, 1, 0, 1],
+                    [1, 0, 1, 0, 1, 0, 1],
+                    [1, 0, 1, 0, 1, 0, 1],
+                ],
+                "queryContent": ["test_request_5", "test_request_6", "test_request_7",
+                                 "test_request_8", "test_request_9"]
+            }
+        }
+        for i in range(TEST_REQUEST_COUNT):
+            for day_cof in range(i):
+                new_model = RequestModel(user=self.TEST_USER, text=f'test_request_{i}')
+                new_model.timestamp = new_model.timestamp - timedelta(days=2 * day_cof)
+                new_model.save()
+        create_top_requests_per_week()
+        with open('data.json', 'r') as file:
+            self.assertEquals(json.load(file), TEST_RESULT)
+
+    def test_create_top_requests_per_month(self):
+        TEST_REQUEST_COUNT = 10
+        TEST_RESULT = {
+            "month": {
+                "numberOfQuery": [
+                    [1, 1, 1, 1],
+                    [1, 1, 1, 1],
+                    [1, 1, 1, 1],
+                    [1, 1, 1, 1],
+                    [1, 1, 1, 1],
+                ],
+                "queryContent": ["test_request_5", "test_request_6", "test_request_7",
+                                 "test_request_8", "test_request_9"]
+            }
+        }
+        for i in range(TEST_REQUEST_COUNT):
+            for week_cof in range(i):
+                new_model = RequestModel(user=self.TEST_USER, text=f'test_request_{i}')
+                new_model.timestamp = new_model.timestamp - timedelta(weeks=1*week_cof)
+                new_model.save()
+        create_top_requests_per_month()
+        with open('data.json', 'r') as file:
+            self.assertEquals(json.load(file), TEST_RESULT)
