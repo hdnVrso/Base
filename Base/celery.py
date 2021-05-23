@@ -19,7 +19,7 @@ app.autodiscover_tasks()
 def setup_periodic_tasks(sender, **kwargs):
     sender.add_periodic_task(
         5.0,
-        create_top_requests_per_month.s(),
+        create_top_requests_per_day.s(),
     )
 
 
