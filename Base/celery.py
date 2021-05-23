@@ -37,7 +37,7 @@ def create_top_requests_per_day():
     request_list = RequestModel.objects.filter(timestamp__gte=time_threshold)
     top_requests_texts = create_topics_list_by_time_interval(RequestModel, time_threshold)
     for text in top_requests_texts:
-        number_of_query_list.append(create_topics_count_list_per_week(
+        number_of_query_list.append(create_topics_count_list_per_day(
             text=text, request_list=request_list, time_now=time_now))
     number_of_query_list = append_list_with_empty_lists(
         number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_DAY, LENGTH_TOP_REQUESTS_NUMBER_LIST)
