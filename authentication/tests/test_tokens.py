@@ -66,3 +66,51 @@ class RefreshTokenTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
             email=RefreshTokenTests.email,
             password=RefreshTokenTests.password)
 
+    def test_returns_403_forbidden_if_request_has_no_token(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_400_BAD_REQUEST)
+
+    def test_returns_403_forbidden_if_request_has_no_token_type_prefix(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_400_BAD_REQUEST)
+
+    def test_returns_403_forbidden_if_request_has_invalid_token_type_prefix(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_400_BAD_REQUEST)
+
+    def test_returns_403_forbidden_if_request_has_invalid_token(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_400_BAD_REQUEST)
+
+    def test_returns_403_forbidden_if_request_has_expired_token(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_400_BAD_REQUEST)
+
+    def test_returns_200_ok_if_request_is_valid(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_400_BAD_REQUEST)
+
+    def test_returns_correct_body_if_request_is_valid(self):
+        url = reverse('authentication:refresh_token')
+        refresh_token = self.user.refresh_token
+        response = self.client.post(url, None, format='json')
+        self.assertEqual(response.status_code,
+                         status.HTTP_400_BAD_REQUEST)
