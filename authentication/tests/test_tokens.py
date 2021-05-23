@@ -1,5 +1,3 @@
-import jwt
-from django.conf import settings
 from rest_framework.test import APITestCase, URLPatternsTestCase
 from rest_framework import status
 from django.urls import include, path, reverse
