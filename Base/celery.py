@@ -24,7 +24,7 @@ app.conf.timezone = 'UTC'
 
 @app.task
 def create_top_requests_per_day():
-    from authentication.models import RequestModel
+    from api.models import RequestModel
     COUNT_OF_TOP_REQUESTS_PER_DAY = 5
     LENGTH_TOP_REQUESTS_NUMBER_LIST = 8
     time_now = datetime.now()
@@ -46,7 +46,7 @@ def create_top_requests_per_day():
 
 @app.task
 def create_top_requests_per_week():
-    from authentication.models import RequestModel
+    from api.models import RequestModel
     COUNT_OF_TOP_REQUESTS_PER_WEEK = 5
     LENGTH_TOP_REQUESTS_NUMBER_LIST = 7
     time_now = datetime.now()
@@ -68,7 +68,7 @@ def create_top_requests_per_week():
 
 @app.task
 def create_top_requests_per_month():
-    from authentication.models import RequestModel
+    from api.models import RequestModel
     COUNT_OF_TOP_REQUESTS_PER_MONTH = 5
     LENGTH_TOP_REQUESTS_NUMBER_LIST = 4
     time_now = datetime.now()
