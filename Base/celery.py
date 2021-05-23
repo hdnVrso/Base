@@ -19,7 +19,7 @@ app.autodiscover_tasks()
 def setup_periodic_tasks(sender, **kwargs):
     sender.add_periodic_task(
         5.0,
-        create_top_requests_per_day.s(),
+        create_top_requests_per_month.s(),
     )
 
 
@@ -62,11 +62,12 @@ def create_top_requests_per_week():
     for text in top_requests_texts:
         number_of_query_list.append(create_topics_count_list_per_week(
             text=text, request_list=request_list, time_now=time_now))
+    number_of_query_list = append_list_with_empty_lists(
+        number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_WEEK, LENGTH_TOP_REQUESTS_NUMBER_LIST)
+    top_requests_texts = append_list_with_empty_strings(top_requests_texts,
+                                                        COUNT_OF_TOP_REQUESTS_PER_WEEK)
     json_data = {"week": {"numberOfQuery": number_of_query_list,
-                          "queryContent": top_requests_texts}}
-    append_list_with_empty_lists(number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_WEEK,
-                                 LENGTH_TOP_REQUESTS_NUMBER_LIST)
-    append_list_with_empty_strings(top_requests_texts, COUNT_OF_TOP_REQUESTS_PER_WEEK)
+                         "queryContent": top_requests_texts}}
     with open('data.json', 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
@@ -84,11 +85,12 @@ def create_top_requests_per_month():
     for text in top_requests_texts:
         number_of_query_list.append(create_topics_count_list_per_month(
             text=text, request_list=request_list, time_now=time_now))
+    number_of_query_list = append_list_with_empty_lists(
+        number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_MONTH, LENGTH_TOP_REQUESTS_NUMBER_LIST)
+    top_requests_texts = append_list_with_empty_strings(top_requests_texts,
+                                                        COUNT_OF_TOP_REQUESTS_PER_MONTH)
     json_data = {"month": {"numberOfQuery": number_of_query_list,
-                           "queryContent": top_requests_texts}}
-    append_list_with_empty_lists(number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_MONTH,
-                                 LENGTH_TOP_REQUESTS_NUMBER_LIST)
-    append_list_with_empty_strings(top_requests_texts, COUNT_OF_TOP_REQUESTS_PER_MONTH)
+                         "queryContent": top_requests_texts}}
     with open('data.json', 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
