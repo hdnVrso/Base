@@ -52,16 +52,16 @@ class ResetPassword(APIView):
         new_password = request.data.get('new_password', {})
         repeated_new_password = request.data.get('new_password1', {})
         check_token = TokenChecker()
-        resp = check_token.check_token(email, token, new_password, repeated_new_password)
-        return Response(resp[1], status=resp[2])
+        response = check_token.check_token(email, token, new_password, repeated_new_password)
+        return Response(response[1], status=response[2])
 
 
 class SetEmail(APIView):
     def post(self, request: Request):
         email = request.data.get('email', {})
         token_gen = TokenGenerator()
-        res = token_gen.send_token(email)
-        if res:
+        response = token_gen.send_token(email)
+        if response:
             return Response("Token sent successfully", status=200)
         else:
             return Response("No user with this email address", status=403)
