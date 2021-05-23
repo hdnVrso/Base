@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Health, Requests, RequestsHistory, RequestsRating, ResetPassword, CeleryDataView
+from .views import Health, CeleryDataView
 
 urlpatterns = [
     path('health/', Health.as_view(), name='health'),
