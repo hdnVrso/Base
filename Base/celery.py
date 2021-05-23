@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 import json
 import environ
 
-
 ENV = environ.Env()
 environ.Env.read_env()
 
@@ -20,7 +19,7 @@ app.autodiscover_tasks()
 def setup_periodic_tasks(sender, **kwargs):
     sender.add_periodic_task(
         5.0,
-        create_top_requests_per_month.s(),
+        create_top_requests_per_day.s(),
     )
 
 
@@ -40,11 +39,12 @@ def create_top_requests_per_day():
     for text in top_requests_texts:
         number_of_query_list.append(create_topics_count_list_per_week(
             text=text, request_list=request_list, time_now=time_now))
+    number_of_query_list = append_list_with_empty_lists(
+        number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_DAY, LENGTH_TOP_REQUESTS_NUMBER_LIST)
+    top_requests_texts = append_list_with_empty_strings(top_requests_texts,
+                                                        COUNT_OF_TOP_REQUESTS_PER_DAY)
     json_data = {"day": {"numberOfQuery": number_of_query_list,
                          "queryContent": top_requests_texts}}
-    append_list_with_empty_lists(number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_DAY,
-                                 LENGTH_TOP_REQUESTS_NUMBER_LIST)
-    append_list_with_empty_strings(top_requests_texts, COUNT_OF_TOP_REQUESTS_PER_DAY)
     with open('data.json', 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
@@ -146,8 +146,10 @@ def create_topics_list_by_time_interval(model, time_interval):
 def append_list_with_empty_lists(request_number_list, list_length, empty_list_length):
     for _ in (range(list_length - len(request_number_list))):
         request_number_list.append([0 for i in range(empty_list_length)])
+    return request_number_list
 
 
 def append_list_with_empty_strings(query_content_list, list_length):
     for _ in (range(list_length - len(query_content_list))):
         query_content_list.append("")
+    return query_content_list
