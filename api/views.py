@@ -45,11 +45,6 @@ class RequestsRating(APIView):
         return Response("Not implemented", status=500)
 
 
-class ResetPassword(APIView):
-    def post(self, request: Request):
-        return Response("Not implemented", status=500)
-
-
 class CeleryDataView(APIView):
     def get(self, request):
         return Response(open("celery_test_data.json", 'r').read())
