@@ -37,8 +37,7 @@ class JWTAccessAuthentication(authentication.BaseAuthentication):
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
         except BaseException:
-            msg = 'Invalid authentication. Could not decode token.'
-            raise exceptions.AuthenticationFailed(msg)
+            raise exceptions.AuthenticationFailed('Invalid authentication. Could not decode token.')
 
         if payload['type'] != 'access':
             raise exceptions.AuthenticationFailed('Wrong token type')
@@ -83,8 +82,7 @@ class JWTRefreshAuthentication(authentication.BaseAuthentication):
             payload = jwt.decode(token, settings.SECRET_KEY,
                                  algorithms='HS256')
         except BaseException:
-            message = 'Invalid authentication. Could not decode token.'
-            raise exceptions.AuthenticationFailed(message)
+            raise exceptions.AuthenticationFailed('Invalid authentication. Could not decode token.')
 
         if payload['type'] != 'refresh':
             raise exceptions.AuthenticationFailed('Wrong token type')
