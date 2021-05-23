@@ -1,7 +1,7 @@
 [run]
 branch = True
 data_file = coverage/.coverage
-omit = *tests*
+omit = *tests*, */migrations/*, */settings.py, manage.py
 
 [report]
 
