@@ -15,22 +15,25 @@ class ObtainTokenTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
 
     def setUp(self):
         self.fake = Faker()
+        self.username = self.fake.name()
+        self.email = self.fake.email()
+        self.password = self.fake.password()
         self.user = User.objects.create_user(
-            username=self.fake.name(),
-            email=self.fake.email(),
-            password=self.fake.password()
+            username=self.username,
+            email=self.email,
+            password=self.password
         )
 
     def test_returns_400_bad_request_if_has_no_email(self):
         url = reverse('authentication:obtain_token')
-        request = {'user': {'password': self.user.password}}
+        request = {'user': {'password': self.password}}
         response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_400_BAD_REQUEST)
 
     def test_returns_400_bad_request_if_has_no_password(self):
         url = reverse('authentication:obtain_token')
-        request = {'user': {'email': self.user.email}}
+        request = {'user': {'email': self.email}}
         response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_400_BAD_REQUEST)
@@ -39,7 +42,7 @@ class ObtainTokenTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
         url = reverse('authentication:obtain_token')
 
         request = {'user': {'email': 'emailemail.com',
-                            'password': self.user.password}}
+                            'password': self.password}}
         response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_400_BAD_REQUEST)
@@ -47,8 +50,8 @@ class ObtainTokenTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
     def test_returns_200_ok_if_request_is_valid(self):
         url = reverse('authentication:obtain_token')
 
-        request = {'user': {'email': self.user.email,
-                   'password': self.user.password}}
+        request = {'user': {'email': self.email,
+                   'password': self.password}}
         response = self.client.post(url, request, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_200_OK)
@@ -61,10 +64,13 @@ class RefreshTokenTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
 
     def setUp(self):
         self.fake = Faker()
+        self.username = self.fake.name()
+        self.email = self.fake.email()
+        self.password = self.fake.password()
         self.user = User.objects.create_user(
-            username=self.fake.name(),
-            email=self.fake.email(),
-            password=self.fake.password()
+            username=self.username,
+            email=self.email,
+            password=self.password
         )
 
     def test_returns_403_forbidden_if_request_has_no_token(self):
@@ -106,7 +112,7 @@ class RefreshTokenTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
         payload = jwt.decode(refresh_token, settings.SECRET_KEY,
                              algorithms='HS256')
         self.client.credentials(
-            HTTP_AUTHORIZATION='Invalid_prefix' + refresh_token)
+            HTTP_AUTHORIZATION='Bearer' + refresh_token)
         response = self.client.post(url, None, format='json')
         self.assertEqual(response.status_code,
                          status.HTTP_403_FORBIDDEN)

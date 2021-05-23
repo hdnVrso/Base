@@ -119,8 +119,7 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'authentication.backends.JWTAccessAuthentication',
-        # 'authentication.backends.JWTRefreshAuthentication'
+        'rest_framework.authentication.BasicAuthentication',
     ],
 }
 
