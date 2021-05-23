@@ -42,7 +42,7 @@ class JWTAccessAuthentication(authentication.BaseAuthentication):
         if payload['type'] != 'access':
             raise exceptions.AuthenticationFailed('Wrong token type')
 
-        if payload['exp'] < datetime.now():
+        if payload['exp'] < int(datetime.now().strftime('%s')):
             raise exceptions.AuthenticationFailed('Token expired')
 
         try:
