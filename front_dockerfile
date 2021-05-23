@@ -1,0 +1,5 @@
+FROM node:alpine
+
+COPY Base_ClientSide/package.json /code/
+WORKDIR /code/
+RUN yarn install

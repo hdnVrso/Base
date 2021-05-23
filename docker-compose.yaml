@@ -60,3 +60,16 @@ services:
     depends_on:
       - django
       - redis
+
+
+  front:
+    build:
+      context: .
+      dockerfile: front_dockerfile
+    container_name: front
+    working_dir: /code/
+    command: ./node_modules/.bin/react-scripts start && yarn run start
+    volumes:
+      - ./Base_ClientSide:/code/
+    ports:
+      - "3000:3000"
