@@ -109,8 +109,8 @@ class RefreshTokenTests(APITestCase, URLPatternsTestCase, TransactionTestCase):
         refresh_token = self.user.refresh_token
 
         # TODO: expire token
-        payload = jwt.decode(refresh_token, settings.SECRET_KEY,
-                             algorithms='HS256')
+        # payload = jwt.decode(refresh_token, settings.SECRET_KEY,
+        #                     algorithms='HS256')
         self.client.credentials(
             HTTP_AUTHORIZATION='Bearer' + refresh_token)
         response = self.client.post(url, None, format='json')
