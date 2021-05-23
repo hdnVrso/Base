@@ -10,7 +10,7 @@ from telethon import functions
 class TelegramApiWrapper:
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read("TelegramApiWrapper/config.ini")
+        config.read("telegram_api_wrapper/config.ini")
         api_id = config['Telegram']['api_id']
         api_hash = config['Telegram']['api_hash']
         self.phone = config['Telegram']['phone']
@@ -34,19 +34,16 @@ class TelegramApiWrapper:
         ))
         channels_dicts = []
         links = ""
-        counter = 0
         for channel in result.chats:
-            if counter == 3:
-                break
             full_result = self.client(functions.channels.GetFullChannelRequest(
                 channel=channel.id
             ))
             channel_dict = self.create_dict(channel,
                                             full_result.full_chat.about)
-            links += "\n" + channel_dict['link']
+            links += "\n" + channel_dict['link'] + "\n"
             channels_dicts.append(channel_dict)
-            counter += 1
-        # self.send_messages("@marshaldub", links)#Изменить
+        # message = 'Список каналов найденных для вас приложением Base:\n' + links
+        # self.send_messages("@k_hamraev", message)  # Изменить
         return channels_dicts
 
     def send_messages(self, username, message):
