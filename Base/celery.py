@@ -3,8 +3,13 @@ from celery import Celery
 from collections import OrderedDict
 from datetime import datetime, timedelta
 import json
+import environ
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Base.settings")
+
+ENV = environ.Env()
+environ.Env.read_env()
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", ENV("DJANGO_SETTINGS_MODULE"))
 
 app = Celery("Base")
 app.config_from_object("django.conf:settings", namespace="CELERY")
@@ -37,9 +42,9 @@ def create_top_requests_per_day():
             text=text, request_list=request_list, time_now=time_now))
     json_data = {"day": {"numberOfQuery": number_of_query_list,
                          "queryContent": top_requests_texts}}
-    input_empty_lists_to_request_number_list(number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_DAY,
-                                             LENGTH_TOP_REQUESTS_NUMBER_LIST)
-    input_empty_strings_to_query_content_list(top_requests_texts, COUNT_OF_TOP_REQUESTS_PER_DAY)
+    append_list_with_empty_lists(number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_DAY,
+                                 LENGTH_TOP_REQUESTS_NUMBER_LIST)
+    append_list_with_empty_strings(top_requests_texts, COUNT_OF_TOP_REQUESTS_PER_DAY)
     with open('data.json', 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
@@ -59,9 +64,9 @@ def create_top_requests_per_week():
             text=text, request_list=request_list, time_now=time_now))
     json_data = {"week": {"numberOfQuery": number_of_query_list,
                           "queryContent": top_requests_texts}}
-    input_empty_lists_to_request_number_list(number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_WEEK,
-                                             LENGTH_TOP_REQUESTS_NUMBER_LIST)
-    input_empty_strings_to_query_content_list(top_requests_texts, COUNT_OF_TOP_REQUESTS_PER_WEEK)
+    append_list_with_empty_lists(number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_WEEK,
+                                 LENGTH_TOP_REQUESTS_NUMBER_LIST)
+    append_list_with_empty_strings(top_requests_texts, COUNT_OF_TOP_REQUESTS_PER_WEEK)
     with open('data.json', 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
@@ -81,9 +86,9 @@ def create_top_requests_per_month():
             text=text, request_list=request_list, time_now=time_now))
     json_data = {"month": {"numberOfQuery": number_of_query_list,
                            "queryContent": top_requests_texts}}
-    input_empty_lists_to_request_number_list(number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_MONTH,
-                                             LENGTH_TOP_REQUESTS_NUMBER_LIST)
-    input_empty_strings_to_query_content_list(top_requests_texts, COUNT_OF_TOP_REQUESTS_PER_MONTH)
+    append_list_with_empty_lists(number_of_query_list, COUNT_OF_TOP_REQUESTS_PER_MONTH,
+                                 LENGTH_TOP_REQUESTS_NUMBER_LIST)
+    append_list_with_empty_strings(top_requests_texts, COUNT_OF_TOP_REQUESTS_PER_MONTH)
     with open('data.json', 'w') as json_file:
         json.dump(json_data, json_file, indent=4)
 
@@ -138,11 +143,11 @@ def create_topics_list_by_time_interval(model, time_interval):
     return top_requests_texts
 
 
-def input_empty_lists_to_request_number_list(request_number_list, list_length, empty_list_length):
+def append_list_with_empty_lists(request_number_list, list_length, empty_list_length):
     for _ in (range(list_length - len(request_number_list))):
         request_number_list.append([0 for i in range(empty_list_length)])
 
 
-def input_empty_strings_to_query_content_list(query_content_list, list_length):
+def append_list_with_empty_strings(query_content_list, list_length):
     for _ in (range(list_length - len(query_content_list))):
         query_content_list.append("")
