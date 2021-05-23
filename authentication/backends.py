@@ -18,18 +18,18 @@ class JWTAccessAuthentication(authentication.BaseAuthentication):
         auth_header_prefix = self.authentication_header_prefix.lower()
 
         if not auth_header:
-            return None
+            raise exceptions.AuthenticationFailed('No auth header')
 
         if len(auth_header) == 1:
-            return None
+            raise exceptions.AuthenticationFailed('No token given')
         elif len(auth_header) > 2:
-            return None
+            raise exceptions.AuthenticationFailed('Invalid auth header')
 
         prefix = auth_header[0].decode('utf-8')
         token = auth_header[1].decode('utf-8')
 
         if prefix.lower() != auth_header_prefix:
-            return None
+            raise exceptions.AuthenticationFailed('Invalid token type prefix')
 
         return self._authenticate_credentials(request, token)
 
@@ -63,18 +63,18 @@ class JWTRefreshAuthentication(authentication.BaseAuthentication):
         auth_header_prefix = self.authentication_header_prefix.lower()
 
         if not auth_header:
-            return None
+            raise exceptions.AuthenticationFailed('No auth header')
 
         if len(auth_header) == 1:
-            return None
+            raise exceptions.AuthenticationFailed('No token given')
         elif len(auth_header) > 2:
-            return None
+            raise exceptions.AuthenticationFailed('Invalid auth header')
 
         prefix = auth_header[0].decode('utf-8')
         token = auth_header[1].decode('utf-8')
 
         if prefix.lower() != auth_header_prefix:
-            return None
+            raise exceptions.AuthenticationFailed('Invalid token type prefix')
 
         return self._authenticate_credentials(request, token)
 
@@ -83,8 +83,8 @@ class JWTRefreshAuthentication(authentication.BaseAuthentication):
             payload = jwt.decode(token, settings.SECRET_KEY,
                                  algorithms='HS256')
         except BaseException:
-            msg = 'Invalid authentication. Could not decode token.'
-            raise exceptions.AuthenticationFailed(msg)
+            message = 'Invalid authentication. Could not decode token.'
+            raise exceptions.AuthenticationFailed(message)
 
         if payload['type'] != 'refresh':
             raise exceptions.AuthenticationFailed('Wrong token type')
