@@ -72,7 +72,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         access_token = jwt.encode({
             'id': self.pk,
-            'exp': int(dt.strftime('%s')),
+            'exp': dt.strftime('%s'),
             'type': 'access',
         }, settings.SECRET_KEY, algorithm='HS256')
 
@@ -88,12 +88,3 @@ class User(AbstractBaseUser, PermissionsMixin):
         }, settings.SECRET_KEY, algorithm='HS256')
 
         return refresh_token
-
-
-class RequestModel(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField(blank=False, max_length=100)
-    timestamp = models.DateTimeField(auto_created=True, auto_now_add=True)
-
-    def __str__(self):
-        return self.text

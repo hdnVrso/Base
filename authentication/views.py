@@ -5,13 +5,12 @@ from rest_framework.views import APIView
 
 from .serializers import RegistrationSerializer
 from .serializers import AccessTokensSerializer
-from .authentication import JWTRefreshAuthentication
+from .backends import JWTRefreshAuthentication
 
 from .renderers import UserJSONRenderer
 
 
 class RegistrationAPIView(APIView):
-    permission_classes = (AllowAny,)
     serializer_class = RegistrationSerializer
     renderer_classes = (UserJSONRenderer, )
 
@@ -36,16 +35,20 @@ class ObtainTokenAPIView(APIView):
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class RefreshTokenAPIView(APIView):
     permission_classes = (AllowAny,)
     renderer_classes = (UserJSONRenderer,)
-    serializer_class = AccessTokensSerializer
-    authentication_classes = JWTRefreshAuthentication
+    authentication_classes = (JWTRefreshAuthentication, )
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.user)
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        response = {
+            'email': request.user.email,
+            'username': request.user.username,
+            'access_token': request.user.access_token,
+            'refresh_token': request.user.refresh_token
+        }
+
+        return Response(data=response, status=status.HTTP_200_OK)
